@@ -14,9 +14,15 @@ namespace Tests
 		// ReSharper disable UnusedParameter.Local
 	    private static void AssertExpressionsEquals(Expression expected, Expression actual)
 		// ReSharper enable UnusedParameter.Local
-		{
-			var comparer = ExpressionEqualityComparer.Instance;
-			Assert.True(comparer.Equals(expected, actual), $"Expressions are not equal. Expected: {expected}, actual: {actual}");
+		{			
+			try
+			{
+				ExpressionEqualityComparer.Instance.Equals(expected, actual);
+			}
+			catch (AssertionException ex)
+			{
+				throw new AssertionException($"Expressions are not equal.\nExpected: {expected}\nActual  : {actual}\n\n{ex.Message}", ex);
+			}
 	    }
 
 		[Test]
@@ -94,6 +100,87 @@ namespace Tests
 				), i);
 
 			var actual = input.InlineInvokes();
+
+			AssertExpressionsEquals(expected, actual);
+		}
+
+		[Test]
+		public void TestMultiple2()
+		{
+			var z = Expression.Parameter(typeof(int), "z");
+			var h = Expression.Parameter(typeof(int), "h");
+			var b = Expression.Parameter(typeof(int), "b");
+			var c = Expression.Parameter(typeof(int), "c");
+			var d = Expression.Parameter(typeof(int), "d");
+			var e = Expression.Parameter(typeof(int), "e");
+
+			// Invoke(h => (h * 8), z)
+			var invokeA = Expression.Invoke(
+				Expression.Lambda(
+					Expression.Multiply(h, Expression.Constant(8)
+					),
+					h
+				),
+				z
+			);
+
+			// Invoke(z => (25 + Invoke(h => (h * 8), z)), b)
+			var invokeB = Expression.Invoke(
+				Expression.Lambda(
+					Expression.Add(Expression.Constant(25), invokeA),
+					z
+				),
+				b
+			);
+
+			//Invoke(b => (50 + Invoke(z => (25 + Invoke(h => (h * 8), z)), b)), b)
+			var invokeC = Expression.Invoke(
+				Expression.Lambda(
+					Expression.Add(Expression.Constant(50), invokeB),
+					b
+				),
+				b
+			);
+
+			// Invoke(c => (c + 2), b)
+			var invokeD = Expression.Invoke(
+				Expression.Lambda(
+					Expression.Add(c, Expression.Constant(2)),
+					c
+				),
+				b
+			);
+
+			// Invoke((d, e) => (d * e), Invoke(b => (50 + Invoke(z => (25 + Invoke(h => (h * 8), z)), b)), b), Invoke(c => (c + 2), b))
+			var topInvoke = Expression.Invoke(
+				Expression.Lambda(
+					Expression.Multiply(d, e),
+					d, e
+				),
+				invokeC, invokeD
+			);
+
+			// b => Invoke((d, e) => (d * e), Invoke(b => (50 + Invoke(z => (25 + Invoke(h => (h * 8), z)), b)), b), Invoke(c => (c + 2), b))
+			var input = Expression.Lambda(
+				topInvoke,
+				b
+			);
+			var actual = input.InlineInvokes();
+
+			// b => ((50 + (25 + (b * 8))) * (b + 2)) 
+			var expected = Expression.Lambda(
+				Expression.Multiply(
+					Expression.Add(
+						Expression.Constant(50),
+						Expression.Add(
+							Expression.Constant(25),
+							Expression.Multiply(b, Expression.Constant(8))
+						)
+					),
+					Expression.Add(b, Expression.Constant(2))
+				),
+				b
+			);
 
 			AssertExpressionsEquals(expected, actual);
 		}
