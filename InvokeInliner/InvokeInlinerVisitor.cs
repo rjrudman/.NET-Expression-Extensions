@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace InvokeInliner
 {
-	public class InvokeInliner : ExpressionVisitor
+	public class InvokeInlinerVisitor : ExpressionVisitor
 	{
 		private readonly Stack<Dictionary<ParameterExpression, Expression>> _context = new Stack<Dictionary<ParameterExpression, Expression>>();
 		public Expression Inline(Expression expression)

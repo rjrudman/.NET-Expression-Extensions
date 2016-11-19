@@ -203,3 +203,4 @@ project.lock.json
 /Grammar/WebPipesGrammarParser.cs
 /Grammar/WebPipesGrammarVisitor.cs
 /Grammar/WebPipesGrammar.tokens
+/InvokeInliner/lib
