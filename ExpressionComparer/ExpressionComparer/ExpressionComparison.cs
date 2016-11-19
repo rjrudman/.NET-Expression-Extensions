@@ -48,7 +48,7 @@ namespace ExpressionComparer
 			return (T)_candidate;
 		}
 
-		public void Compare(Expression expression)
+		public void AssertEqual(Expression expression)
 		{
 			Visit(expression);
 

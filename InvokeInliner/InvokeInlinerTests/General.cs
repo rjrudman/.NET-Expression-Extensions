@@ -17,7 +17,7 @@ namespace Tests
 		{			
 			try
 			{
-				ExpressionEqualityComparer.Instance.Equals(expected, actual);
+				new ExpressionEqualityComparer().AssertEqual(expected, actual);
 			}
 			catch (AssertionException ex)
 			{
