@@ -10,21 +10,6 @@ namespace Tests
     public class General
 	{
 		private static int TestFunction() => 5;
-
-		// ReSharper disable UnusedParameter.Local
-	    private static void AssertExpressionsEquals(Expression expected, Expression actual)
-		// ReSharper enable UnusedParameter.Local
-		{			
-			try
-			{
-				new ExpressionEqualityComparer().AssertEqual(expected, actual);
-			}
-			catch (AssertionException ex)
-			{
-				throw new AssertionException($"Expressions are not equal.\nExpected: {expected}\nActual  : {actual}\n\n{ex.Message}", ex);
-			}
-	    }
-
 		[Test]
 		public void TestSimple()
 		{
@@ -37,7 +22,7 @@ namespace Tests
 			var expected = Expression.Add(Expression.Constant(3), Expression.Constant(1));
 
 			var actual = input.InlineInvokes();
-			AssertExpressionsEquals(expected, actual);
+			ExpressionEqualityComparer.AssertExpressionsEqual(expected, actual);
 		}
 
 		[Test]
@@ -101,7 +86,7 @@ namespace Tests
 
 			var actual = input.InlineInvokes();
 
-			AssertExpressionsEquals(expected, actual);
+			ExpressionEqualityComparer.AssertExpressionsEqual(expected, actual);
 		}
 
 		[Test]
@@ -182,7 +167,7 @@ namespace Tests
 				b
 			);
 
-			AssertExpressionsEquals(expected, actual);
+			ExpressionEqualityComparer.AssertExpressionsEqual(expected, actual);
 		}
 
 		[Test]
@@ -190,8 +175,8 @@ namespace Tests
 	    {
 			var expected = Expression.Invoke(Expression.Constant((Func<int>)TestFunction));
 			var actual = Expression.Invoke(Expression.Constant((Func<int>)TestFunction)).InlineInvokes();
-		    
-		    AssertExpressionsEquals(expected, actual);
+
+			ExpressionEqualityComparer.AssertExpressionsEqual(expected, actual);
 	    }
 
 		[Test]
@@ -214,7 +199,7 @@ namespace Tests
 				Expression.Constant(2)
 			).InlineInvokes();
 
-			AssertExpressionsEquals(expected, actual);
+			ExpressionEqualityComparer.AssertExpressionsEqual(expected, actual);
 		}
 
 		[Test]
@@ -237,7 +222,7 @@ namespace Tests
 				Expression.Constant(2)
 			).InlineInvokes();
 
-			AssertExpressionsEquals(expected, actual);
+			ExpressionEqualityComparer.AssertExpressionsEqual(expected, actual);
 		}
 	}
 }
