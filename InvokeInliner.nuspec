@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>InvokeInliner</id>
+    <version>1.0.0</version>
+    <authors>Robert Rudman</authors>
+    <owners>Robert Rudman</owners>
+    <licenseUrl>https://github.com/rjrudman/.NET-Expression-Utilities/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/rjrudman/.NET-Expression-Utilities</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A tool to parse an expression tree and inline any InvokeExpressions it encountered</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>C# ExpressionTrees Invoke</tags>
+    <dependencies>
+      <dependency id="NETStandard.Library" version="1.6.0" />
+    </dependencies>
+  </metadata>
+</package>

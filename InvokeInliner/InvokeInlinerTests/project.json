@@ -3,13 +3,14 @@
 	"buildOptions": {
 		"debugType": "portable"
 	},
-	"dependencies": {
-		"NUnit": "3.5.0",
-		"dotnet-test-nunit": "3.4.0-beta-3",
-		"Microsoft.AspNetCore.TestHost": "1.0.0",
-		"Microsoft.EntityFrameworkCore.InMemory": "1.0.1",
-		"InvokeInliner": "1.0.0-*"
-	},
+  "dependencies": {
+    "NUnit": "3.5.0",
+    "dotnet-test-nunit": "3.4.0-beta-3",
+    "Microsoft.AspNetCore.TestHost": "1.0.0",
+    "Microsoft.EntityFrameworkCore.InMemory": "1.0.1",
+    "InvokeInliner": "1.0.0-*",
+    "ExpressionComparer": "1.0.0-*"
+  },
 	"testRunner": "nunit",
 	"frameworks": {
 		"netcoreapp1.0": {
